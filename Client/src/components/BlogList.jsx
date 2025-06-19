@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const categories = [
   { id: 0, name: "All", slug: "all", emoji: "📈" },
@@ -20,29 +20,41 @@ const categories = [
 ];
 
 const BlogList = () => {
+  const [menu, setMenu] = useState("All");
+
   return (
     <div className="w-11/12 mx-auto flex flex-col md:flex-row gap-6 py-6">
       {/* Trending Topics Sidebar */}
-      <div className="w-full md:w-[400px] bg-white max-h-fit  shadow-2xl border  rounded-3xl border-gray-200 p-2">
+      <div className="w-full md:w-[400px] bg-white max-h-fit shadow-2xl border rounded-3xl border-gray-200 p-2">
         <h2 className="text-2xl font-semibold mb-4 px-3 border-b pb-2">Trending Topics</h2>
         <div className="flex flex-wrap gap-3 px-3">
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              className="cursor-pointer flex items-center gap-2 py-1 px-3 border rounded-full bg-[#F5F4F7] shadow hover:shadow-md transition"
-            >
-              <span className="text-lg">{category.emoji}</span>
-              <span className="font-medium text-sm">{category.name}</span>
-            </div>
-          ))}
+          {categories.map((category) => {
+            const isSelected = menu === category.name;
+
+            return (
+              <button
+                key={category.id}
+                onClick={() => setMenu(category.name)}
+                className={`flex items-center gap-2 py-1 px-3 border rounded-full shadow transition 
+                  ${
+                    isSelected
+                      ? "bg-black text-white border-black"
+                      : "bg-[#F5F4F7] text-black hover:shadow-md"
+                  }`}
+              >
+                <span className="text-lg">{category.emoji}</span>
+                <span className="font-medium text-sm">{category.name}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Blog Section */}
       <div className="flex-1 rounded-3xl min-h-screen bg-white p-4 shadow">
-        <h1 className="text-2xl font-bold mb-4">All Blog Posts</h1>
-        <p className="text-gray-600">Here you'll see the latest posts from all topics...</p>
-        {/* Add blog cards/components here later */}
+        <h1 className="text-2xl font-bold mb-4">{menu} Blog Posts</h1>
+        <p className="text-gray-600">Showing posts for: <strong>{menu}</strong></p>
+        {/* You can add filtered blog posts here later */}
       </div>
     </div>
   );
