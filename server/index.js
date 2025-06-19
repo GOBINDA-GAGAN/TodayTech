@@ -1,12 +1,16 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
-// Define a route
-app.get('/', (req, res) => {
-  res.send('Hello from Express!');
+const blogRouter = require("./routes/blogRouters");
+
+app.use(express.json());
+
+app.use("/api/v1/blogs", blogRouter);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to Blog API v1");
 });
 
-// Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
